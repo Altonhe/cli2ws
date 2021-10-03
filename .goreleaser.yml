@@ -36,5 +36,5 @@ release:
   # Note: it can only be one: either github, gitlab or gitea
   github:
     owner: Altonhe
-    name: hw-cron
+    name: cli2ws
   disable: false

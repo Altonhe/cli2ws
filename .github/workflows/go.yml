@@ -1,7 +1,7 @@
 name: Go
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
     paths:
       - '**.go'
       - 'go.mod'
@@ -57,6 +57,7 @@ jobs:
           PGUSER: postgres
           PGPASSWORD: postgres
           PGSSLMODE: disable
+
   goreleaser:
     runs-on: ubuntu-latest
     steps:
