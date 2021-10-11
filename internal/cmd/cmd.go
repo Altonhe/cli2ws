@@ -28,12 +28,13 @@ func Execute(cmd string, ws *websocket.Conn) error {
 	outScanner := bufio.NewScanner(f)
 	for outScanner.Scan() {
 		ws.SetWriteDeadline(time.Now().Add(writeWait))
-		if err := ws.WriteMessage(websocket.TextMessage, outScanner.Bytes()); err != nil {
+		if err := ws.WriteMessage(websocket.BinaryMessage, outScanner.Bytes()); err != nil {
 			log.Error("Write message: %v", err)
 			ws.Close()
 			break
 		}
 	}
+	c.Wait()
 
 	return nil
 }
