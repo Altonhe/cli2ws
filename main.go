@@ -1,8 +1,14 @@
+//go:build !windows
+// +build !windows
+
 package main
 
 import (
-	"github.com/cockroachdb/errors"
+	"github.com/flamego/flamego"
 	log "unknwon.dev/clog/v2"
+
+	"cli2ws/internal/context"
+	"cli2ws/internal/route"
 )
 
 func main() {
@@ -13,9 +19,8 @@ func main() {
 		panic("failed to init console logger: " + err.Error())
 	}
 
-	log.Info("Hello World")
-}
-
-func err() error {
-	return errors.New("Use cockroachdb/errors as error package")
+	f := flamego.Classic()
+	f.Use(context.Contexter())
+	f.Any("/ws", route.HandleWs)
+	f.Run()
 }
