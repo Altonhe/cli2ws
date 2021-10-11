@@ -27,9 +27,13 @@ func Execute(cmd string, ws *websocket.Conn) error {
 
 	outScanner := bufio.NewScanner(f)
 	for outScanner.Scan() {
-		ws.SetWriteDeadline(time.Now().Add(writeWait))
+		err := ws.SetWriteDeadline(time.Now().Add(writeWait))
+		if err != nil {
+			log.Error("Failed to set write deadline: %v", err)
+
+		}
 		if err := ws.WriteMessage(websocket.BinaryMessage, outScanner.Bytes()); err != nil {
-			log.Error("Write message: %v", err)
+			log.Error("Failed to write message: %v", err)
 			ws.Close()
 			break
 		}

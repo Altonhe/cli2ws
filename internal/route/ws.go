@@ -13,17 +13,18 @@ var upgrader = websocket.Upgrader{}
 func HandleWs(ctx context.Context) {
 	ws, err := upgrader.Upgrade(ctx.ResponseWriter(), ctx.Request().Request, nil)
 	if err != nil {
-		log.Error("upgrade:", err)
+		log.Error("Failed to upgrade conn: %v", err)
 		return
 	}
+
 	command := ctx.Query("cmd")
-	log.Trace("command: %v", command)
+	log.Trace("Execute command: %v", command)
 
 	err = cmd.Execute(command, ws)
 	if err != nil {
 		log.Error("Failed to execute command: %v", err)
 		ctx.ServerError()
 	}
-	defer func() { _ = ws.Close() }()
 
+	defer func() { _ = ws.Close() }()
 }
